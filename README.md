@@ -2,6 +2,8 @@
 
 Custom Tdarr configuration for intelligent video compression with HDR/SDR detection and adaptive NVENC/software encoding fallback.
 
+Companion project: For advanced Dolby Vision (DoVi) workflows and more complex DoVi compression support, see https://github.com/DuzAwe/Tdarr_DoVi_Compression. Use this Flow for HDR10/SDR and pair with the DoVi repo when sources contain Dolby Vision.
+
 ## Overview
 
 This project provides a Tdarr Flow configuration that:

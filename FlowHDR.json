@@ -1,0 +1,445 @@
+{
+  "_id": "qRoUfKW1YWz",
+  "name": "BitRate Compression — HDR/SDR NVENC",
+  "description": "BitRate Compression — HDR/SDR NVENC",
+  "tags": "",
+  "flowPlugins": [
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "inputsDB": {
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "b9VldMOzx",
+      "position": {
+        "x": 0,
+        "y": 36
+      }
+    },
+    {
+      "name": "Input File",
+      "sourceRepo": "Community",
+      "pluginName": "inputFile",
+      "version": "1.0.0",
+      "inputsDB": {},
+      "fpEnabled": true,
+      "id": "0n1CE4gJwD",
+      "position": {
+        "x": 0,
+        "y": -460
+      }
+    },
+    {
+      "name": "Set Original File",
+      "sourceRepo": "Community",
+      "pluginName": "setOriginalFile",
+      "version": "1.0.0",
+      "inputsDB": {},
+      "fpEnabled": true,
+      "id": "SET_ORIG",
+      "position": {
+        "x": 0,
+        "y": -420
+      }
+    },
+    {
+      "name": "Run Classic Transcode Plugin: Tdarr_Plugin_MC93_MigzImageRemoval",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_MigzImageRemoval",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "Nj6jQD0wxx",
+      "position": {
+        "x": 0,
+        "y": -360
+      }
+    },
+    {
+      "name": "Run Classic Transcode Plugin: Tdarr_Plugin_MC93_Migz3CleanAudio",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz3CleanAudio",
+        "language": "eng,und,jpn",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "PLWtzfb_7I",
+      "position": {
+        "x": 0,
+        "y": -260
+      }
+    },
+    {
+      "name": "Run Classic Transcode Plugin: Tdarr_Plugin_MC93_Migz4CleanSubs",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz4CleanSubs",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "JqH2aXsqRb",
+      "position": {
+        "x": 0,
+        "y": -160
+      }
+    },
+    {
+      "name": "Run Classic Transcode Plugin: Tdarr_Plugin_MC93_Migz6OrderStreams",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz6OrderStreams",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "4TmwCP2z_s",
+      "position": {
+        "x": 0,
+        "y": -60
+      }
+    },
+    {
+      "name": "Check File Name Includes (HDR keywords)",
+      "sourceRepo": "Community",
+      "pluginName": "checkFileNameIncludes",
+      "version": "2.0.0",
+      "inputsDB": {
+        "strings": "DV,DOVI",
+        "caseSensitive": "false",
+        "terms": "DV,DOVI",
+        "pattern": ""
+      },
+      "fpEnabled": true,
+      "id": "ntg_Xmhso",
+      "position": {
+        "x": 0,
+        "y": 90
+      }
+    },
+    {
+      "name": "Check HDR Video",
+      "sourceRepo": "Community",
+      "pluginName": "checkHdr",
+      "version": "1.0.0",
+      "inputsDB": {},
+      "fpEnabled": true,
+      "id": "BC6vwlGK1",
+      "position": {
+        "x": 0,
+        "y": 168
+      }
+    },
+    {
+      "name": "Adaptive SDR NVENC",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR",
+        "container": "original",
+        "bitrate_cutoff": "",
+        "enable_bframes": "true",
+        "force_conform": "false",
+        "cq": "18",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__",
+        "enable_10bit": "true"
+      },
+      "fpEnabled": true,
+      "id": "adaptive_sdr_nvenc",
+      "position": {
+        "x": -260,
+        "y": 260
+      }
+    },
+    {
+      "name": "Adaptive HDR NVENC",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_HDR",
+        "container": "original",
+        "bitrate_cutoff": "",
+        "enable_bframes": "true",
+        "force_conform": "false",
+        "cq": "18",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "adaptive_hdr_nvenc",
+      "position": {
+        "x": 260,
+        "y": 260
+      }
+    },
+    {
+      "name": "Compare File Size",
+      "sourceRepo": "Community",
+      "pluginName": "compareFileSize",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "ipvV_r8i_",
+      "position": {
+        "x": -336,
+        "y": 552
+      }
+    },
+    {
+      "name": "Compare File Size",
+      "sourceRepo": "Community",
+      "pluginName": "compareFileSize",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "4e9T55Uar",
+      "position": {
+        "x": 300,
+        "y": 552
+      }
+    },
+    {
+      "name": "Software Pass To Shrink",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_handbrake_ffmpeg_custom",
+        "cli": "ffmpeg",
+        "arguments": "<io> -map 0 -c:v libx265 -preset medium -crf 19 -bf 5 -x265-params profile=main10 -fps_mode passthrough -c:a copy -c:s copy -y",
+        "container": "original",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "ENCODE_SOFT_SDR",
+      "position": {
+        "x": -144,
+        "y": 552
+      }
+    },
+    {
+      "name": "Software Pass To Shrink (HDR)",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_handbrake_ffmpeg_custom",
+        "cli": "ffmpeg",
+        "arguments": "<io> -map 0 -c:v libx265 -preset slow -crf 18 -pix_fmt p010le -bf 5 -x265-params \"profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc\" -fps_mode passthrough -c:a copy -c:s copy -y",
+        "container": "original",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "ENCODE_SOFT_HDR",
+      "position": {
+        "x": 516,
+        "y": 552
+      }
+    },
+    {
+      "name": "Healthcheck",
+      "sourceRepo": "Community",
+      "pluginName": "runHealthCheck",
+      "version": "1.0.0",
+      "inputsDB": {
+        "type": "thorough"
+      },
+      "fpEnabled": true,
+      "id": "runHealthCheck",
+      "position": {
+        "x": -24,
+        "y": 672
+      }
+    },
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "inputsDB": {
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__"
+      },
+      "fpEnabled": true,
+      "id": "REPLACE_ORIG",
+      "position": {
+        "x": -24,
+        "y": 924
+      }
+    },
+    {
+      "name": "Go To Flow",
+      "sourceRepo": "Community",
+      "pluginName": "goToFlow",
+      "version": "2.0.0",
+      "id": "SDwNVJjkN",
+      "position": {
+        "x": -228,
+        "y": 120
+      },
+      "fpEnabled": true,
+      "inputsDB": {
+        "flowId": "BxXFt1xUa"
+      }
+    }
+  ],
+  "flowEdges": [
+    {
+      "source": "0n1CE4gJwD",
+      "sourceHandle": "1",
+      "target": "SET_ORIG"
+    },
+    {
+      "source": "SET_ORIG",
+      "sourceHandle": "1",
+      "target": "Nj6jQD0wxx"
+    },
+    {
+      "source": "Nj6jQD0wxx",
+      "sourceHandle": "1",
+      "target": "PLWtzfb_7I"
+    },
+    {
+      "source": "Nj6jQD0wxx",
+      "sourceHandle": "2",
+      "target": "PLWtzfb_7I"
+    },
+    {
+      "source": "PLWtzfb_7I",
+      "sourceHandle": "1",
+      "target": "JqH2aXsqRb"
+    },
+    {
+      "source": "PLWtzfb_7I",
+      "sourceHandle": "2",
+      "target": "JqH2aXsqRb"
+    },
+    {
+      "source": "JqH2aXsqRb",
+      "sourceHandle": "1",
+      "target": "4TmwCP2z_s"
+    },
+    {
+      "source": "JqH2aXsqRb",
+      "sourceHandle": "2",
+      "target": "4TmwCP2z_s"
+    },
+    {
+      "source": "ntg_Xmhso",
+      "sourceHandle": "2",
+      "target": "BC6vwlGK1"
+    },
+    {
+      "source": "BC6vwlGK1",
+      "sourceHandle": "1",
+      "target": "adaptive_hdr_nvenc"
+    },
+    {
+      "source": "BC6vwlGK1",
+      "sourceHandle": "2",
+      "target": "adaptive_sdr_nvenc"
+    },
+    {
+      "source": "adaptive_sdr_nvenc",
+      "sourceHandle": "1",
+      "target": "ipvV_r8i_"
+    },
+    {
+      "source": "adaptive_hdr_nvenc",
+      "sourceHandle": "1",
+      "target": "4e9T55Uar"
+    },
+    {
+      "source": "ipvV_r8i_",
+      "sourceHandle": "1",
+      "target": "runHealthCheck"
+    },
+    {
+      "source": "ipvV_r8i_",
+      "sourceHandle": "2",
+      "target": "ENCODE_SOFT_SDR"
+    },
+    {
+      "source": "ipvV_r8i_",
+      "sourceHandle": "3",
+      "target": "ENCODE_SOFT_SDR"
+    },
+    {
+      "source": "4e9T55Uar",
+      "sourceHandle": "1",
+      "target": "runHealthCheck"
+    },
+    {
+      "source": "4e9T55Uar",
+      "sourceHandle": "2",
+      "target": "ENCODE_SOFT_HDR"
+    },
+    {
+      "source": "4e9T55Uar",
+      "sourceHandle": "3",
+      "target": "ENCODE_SOFT_HDR"
+    },
+    {
+      "source": "ENCODE_SOFT_SDR",
+      "sourceHandle": "1",
+      "target": "ipvV_r8i_"
+    },
+    {
+      "source": "ENCODE_SOFT_HDR",
+      "sourceHandle": "1",
+      "target": "4e9T55Uar"
+    },
+    {
+      "source": "runHealthCheck",
+      "sourceHandle": "1",
+      "target": "REPLACE_ORIG"
+    },
+    {
+      "source": "4TmwCP2z_s",
+      "sourceHandle": "1",
+      "target": "b9VldMOzx",
+      "targetHandle": null,
+      "id": "yMFO6Q82o"
+    },
+    {
+      "source": "4TmwCP2z_s",
+      "sourceHandle": "2",
+      "target": "b9VldMOzx",
+      "targetHandle": null,
+      "id": "JHj8dKUfI"
+    },
+    {
+      "source": "b9VldMOzx",
+      "sourceHandle": "1",
+      "target": "ntg_Xmhso",
+      "targetHandle": null,
+      "id": "XzhCcdQnl"
+    },
+    {
+      "source": "ntg_Xmhso",
+      "sourceHandle": "1",
+      "target": "SDwNVJjkN",
+      "targetHandle": null,
+      "id": "aMgWSrVOE"
+    }
+  ]
+}

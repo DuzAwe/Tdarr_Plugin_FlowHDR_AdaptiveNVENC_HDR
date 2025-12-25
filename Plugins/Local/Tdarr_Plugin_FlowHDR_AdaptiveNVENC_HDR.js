@@ -13,6 +13,8 @@ const details = () => ({
       tooltip: 'Output container. original = keep.' },
     { name: 'bitrate_cutoff', type: 'string', defaultValue: '', inputUI: { type: 'text' },
       tooltip: 'Skip encode if current bitrate below this (kbps). Empty disables.' },
+    { name: 'bitrate_target_percentage', type: 'string', defaultValue: '50', inputUI: { type: 'text' },
+      tooltip: 'Target bitrate as % of source (e.g., 50 = half). Range: 1-100.' },
     { name: 'enable_bframes', type: 'boolean', defaultValue: true, inputUI: { type: 'dropdown', options: ['false','true'] },
       tooltip: 'Use NVENC B-frames.' },
     { name: 'force_conform', type: 'boolean', defaultValue: false, inputUI: { type: 'dropdown', options: ['false','true'] },
@@ -63,7 +65,8 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
     return r;
   }
 
-  const targetBitrate = Math.round(currentBitrate / 2);
+  const targetPercent = Math.max(1, Math.min(100, parseInt(inputs.bitrate_target_percentage, 10) || 50));
+  const targetBitrate = Math.round(currentBitrate * (targetPercent / 100));
   const minimumBitrate = Math.round(targetBitrate * 0.8);
   const maximumBitrate = Math.round(targetBitrate * 1.5);
   const bufSize = Math.round(maximumBitrate * 2);

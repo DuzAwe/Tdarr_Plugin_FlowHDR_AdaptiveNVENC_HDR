@@ -152,7 +152,7 @@
       "pluginName": "runClassicTranscodePlugin",
       "version": "2.0.0",
       "inputsDB": {
-        "pluginSourceId": "Community:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR",
+        "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR",
         "container": "original",
         "bitrate_cutoff": "",
         "enable_bframes": "true",
@@ -175,7 +175,7 @@
       "pluginName": "runClassicTranscodePlugin",
       "version": "2.0.0",
       "inputsDB": {
-        "pluginSourceId": "Community:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_HDR",
+        "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_HDR",
         "container": "original",
         "bitrate_cutoff": "",
         "enable_bframes": "true",

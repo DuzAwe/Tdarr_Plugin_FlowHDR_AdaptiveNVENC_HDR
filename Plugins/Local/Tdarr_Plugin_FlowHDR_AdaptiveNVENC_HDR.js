@@ -64,8 +64,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   }
 
   const targetBitrate = Math.round(currentBitrate / 2);
-  const minimumBitrate = Math.round(targetBitrate * 0.7);
-  const maximumBitrate = Math.round(targetBitrate * 1.3);
+  const minimumBitrate = Math.round(targetBitrate * 0.8);
+  const maximumBitrate = Math.round(targetBitrate * 1.5);
+  const bufSize = Math.round(maximumBitrate * 2);
 
   // Bitrate cutoff
   if (inputs.bitrate_cutoff !== '') {
@@ -135,7 +136,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const bframes = inputs.enable_bframes ? '-bf 5 -b_ref_mode each ' : '';
 
   // Bitrate settings
-  const bitrateBlock = `-b:v ${targetBitrate}k -minrate ${minimumBitrate}k -maxrate ${maximumBitrate}k -bufsize ${currentBitrate}k`;
+  const bitrateBlock = `-b:v ${targetBitrate}k -minrate ${minimumBitrate}k -maxrate ${maximumBitrate}k -bufsize ${bufSize}k`;
 
   // Preset
   const cq = inputs.cq;

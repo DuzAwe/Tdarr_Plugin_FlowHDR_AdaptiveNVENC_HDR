@@ -64,8 +64,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   }
 
   const targetBitrate = Math.round(currentBitrate / 2);
-  const minimumBitrate = Math.round(targetBitrate * 0.7);
-  const maximumBitrate = Math.round(targetBitrate * 1.3);
+  const minimumBitrate = Math.round(targetBitrate * 0.8);
+  const maximumBitrate = Math.round(targetBitrate * 1.5);
+  const bufSize = Math.round(maximumBitrate * 2);
 
   // Bitrate cutoff
   if (inputs.bitrate_cutoff !== '') {
@@ -130,7 +131,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   }
 
   // Build x265-params with HDR10 and VBV constraints
-  const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${currentBitrate}`;
+  const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
   let x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:${vbvParams}`;
   
   // Add HDR metadata if available

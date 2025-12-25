@@ -66,8 +66,9 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   }
 
   const targetBitrate = Math.round(currentBitrate / 2);
-  const minimumBitrate = Math.round(targetBitrate * 0.7);
-  const maximumBitrate = Math.round(targetBitrate * 1.3);
+  const minimumBitrate = Math.round(targetBitrate * 0.8);
+  const maximumBitrate = Math.round(targetBitrate * 1.5);
+  const bufSize = Math.round(maximumBitrate * 2);
 
   // Bitrate cutoff
   if (inputs.bitrate_cutoff !== '') {
@@ -115,7 +116,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const pixFmt = inputs.enable_10bit ? '-pix_fmt yuv420p10le' : '';
 
   // Build x265-params with VBV constraints
-  const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${currentBitrate}`;
+  const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
   const x265Params = `profile=main10:${vbvParams}`;
 
   // Build preset

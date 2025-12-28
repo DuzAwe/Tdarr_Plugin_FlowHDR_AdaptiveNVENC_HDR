@@ -135,7 +135,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Build x265-params with HDR10 and VBV constraints
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
-  let x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:${vbvParams}`;
+  let x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:tune=fastdecode:${vbvParams}`;
   
   // Add HDR metadata if available
   if (hdrMasterDisplay) {
@@ -148,7 +148,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   // Build preset
   const crf = inputs.crf;
   const preset = inputs.preset;
-  r.preset = `${genpts}<io> -map 0 -c:v libx265 -preset ${preset} -crf ${crf} -pix_fmt yuv420p10le -bf 5 -x265-params "${x265Params}" -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `${genpts}<io> -map 0 -c:v libx265 -preset ${preset} -crf ${crf} -g 600 -keyint_min 600 -pix_fmt yuv420p10le -bf 5 -x265-params "${x265Params}" -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `HDR Software adaptive: crf=${crf} preset=${preset} cur=${currentBitrate} target=${targetBitrate} vbv-max=${maximumBitrate}\n`;

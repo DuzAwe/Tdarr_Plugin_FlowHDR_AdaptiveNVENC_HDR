@@ -98,32 +98,27 @@ After software encoding, the output is compared again against the **original fil
 - Forces 10-bit encoding (p010le)
 - Configurable CQ, B-frames, bitrate cutoff
 - Adaptive bitrate calculation
+ - Optional full-resolution multipass
+- Weighted prediction automatically enabled only when B-frames are disabled
 
 **Parameters:**
 - `container`: Output container (default: original)
 - `bitrate_cutoff`: Skip encoding if below threshold (kbps)
 - `enable_bframes`: Enable NVENC B-frames (default: true)
-- `force_conform`: Remove incompatible streams (default: false)
-- `cq`: NVENC CQ value (default: 21)
-
-### Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR.js
-**Purpose:** Hardware-accelerated NVENC encoding for SDR content.
-
+- `multipass_fullres`: Enable `-multipass fullres` (default: true)
 **Features:**
 - Optional 10-bit encoding for better compression
 - Configurable CQ, B-frames, bitrate cutoff
 - Adaptive bitrate calculation
+ - Optional full-resolution multipass
+- Weighted prediction automatically enabled only when B-frames are disabled
 
 **Parameters:**
 - `container`: Output container (default: original)
 - `bitrate_cutoff`: Skip encoding if below threshold (kbps)
 - `enable_10bit`: Force 10-bit encoding (default: false)
 - `enable_bframes`: Enable NVENC B-frames (default: true)
-- `force_conform`: Remove incompatible streams (default: false)
-- `cq`: NVENC CQ value (default: 21)
-
-## Installation
-
+- `multipass_fullres`: Enable `-multipass fullres` (default: true)
 ### 1. Copy Custom Plugins
 Copy the plugin files to your Tdarr server:
 
@@ -173,7 +168,7 @@ The flow uses these community plugins (auto-installed by Tdarr):
 
 **NVENC (Hardware):**
 - Lower CQ = Higher quality, larger files (range: 0-51)
-- Default CQ 18 (HDR) and 21 (SDR) balance quality/size
+- Default CQ 18 (HDR/SDR) balances quality/size
 - Modify in flow JSON: `"cq": "18"`
 
 **libx265 (Software):**
@@ -189,6 +184,12 @@ Skip encoding files already below target bitrate:
 ### Preset Tuning
 **NVENC:** Uses `p7` preset (best quality) by default in plugins  
 **Software:** `slow` (HDR) and `medium` (SDR) balance speed/quality
+
+Additional NVENC optimizations used:
+- `-rc-lookahead 32` retained (optimal for target GPUs)
+- `-multipass fullres` (toggleable)
+- `-weighted_pred 1` when B-frames are disabled (automatically controlled)
+ - `-g 600 -keyint_min 600` fixed GOP for consistent keyframe spacing
 
 ## Troubleshooting
 
@@ -240,6 +241,17 @@ Check HDR? ─── Yes → HDR NVENC Encode → Compare vs Original
 - **Typical Flow Time:** 30-60 minutes for 2-hour 1080p HDR movie
 - **Space Savings:** 30-60% average file size reduction
 
+## Recent Tuning & Results
+
+Through additional testing, these changes improved perceived quality and efficiency while maintaining detail:
+- **Removed explicit AQ controls:** Simplifies NVENC behavior and avoids over/under-weighting; quality improved across mixed content.
+- **Default CQ = 18 (HDR/SDR):** Better balance of detail retention vs size.
+- **Consistent GOP:** All encoders now use `-g 600 -keyint_min 600` for predictable keyframes and smoother seeking behavior.
+- **Software encode fastdecode:** Added `tune=fastdecode` to libx265 for faster playback compatibility with minimal impact on quality.
+- **Weighted prediction conditional:** Enabled only without B-frames to maintain compatibility.
+
+Net effect: cleaner motion, stable textures, reliable seeking, and continued size reductions without noticeable artifacts in typical sources.
+
 ## License
 
 Custom plugins are provided as-is for personal use. Community plugins retain their original licenses.
@@ -252,5 +264,5 @@ Custom plugins are provided as-is for personal use. Community plugins retain the
 
 ---
 
-**Version:** 1.0  
-**Last Updated:** December 24, 2025
+**Version:** 1.1  
+**Last Updated:** December 28, 2025

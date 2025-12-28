@@ -16,10 +16,12 @@ const details = () => ({
     { name: 'bitrate_target_percentage', type: 'string', defaultValue: '50', inputUI: { type: 'text' },
       tooltip: 'Target bitrate as % of source (e.g., 50 = half). Range: 1-100.' },
     { name: 'enable_bframes', type: 'boolean', defaultValue: true, inputUI: { type: 'dropdown', options: ['false','true'] },
-      tooltip: 'Use NVENC B-frames.' },
+      tooltip: 'Use NVENC B-frames. Note: weighted_pred is disabled when B-frames are enabled.' },
+    { name: 'multipass_fullres', type: 'boolean', defaultValue: true, inputUI: { type: 'dropdown', options: ['false','true'] },
+      tooltip: 'Enable NVENC full-resolution multipass for improved quality.' },
     { name: 'force_conform', type: 'boolean', defaultValue: false, inputUI: { type: 'dropdown', options: ['false','true'] },
       tooltip: 'Remove unsupported streams for target container.' },
-    { name: 'cq', type: 'string', defaultValue: '21', inputUI: { type: 'text' },
+    { name: 'cq', type: 'string', defaultValue: '18', inputUI: { type: 'text' },
       tooltip: 'NVENC CQ value.' },
   ],
 });
@@ -138,12 +140,17 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   // B-frames
   const bframes = inputs.enable_bframes ? '-bf 5 -b_ref_mode each ' : '';
 
+  // Multipass toggle
+  const multipass = inputs.multipass_fullres ? '-multipass fullres ' : '';
+  // Weighted prediction only when B-frames are disabled
+  const weightedPred = inputs.enable_bframes ? '' : '-weighted_pred 1 ';
+
   // Bitrate settings
   const bitrateBlock = `-b:v ${targetBitrate}k -minrate ${minimumBitrate}k -maxrate ${maximumBitrate}k -bufsize ${bufSize}k`;
 
   // Preset
   const cq = inputs.cq;
-  r.preset = `${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-spatial_aq 1 -rc-lookahead 32 -strict_gop 1 ${pixFmt} ${bitrateBlock} ${hdr}-fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-rc-lookahead 32 ${weightedPred}${multipass}-g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} ${hdr}-fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `HDR NVENC adaptive: cq=${cq} cur=${currentBitrate} target=${targetBitrate} min=${minimumBitrate} max=${maximumBitrate}\n`;

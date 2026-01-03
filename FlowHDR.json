@@ -5,6 +5,32 @@
   "tags": "",
   "flowPlugins": [
     {
+      "name": "Adaptive SDR NVENC (264)",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR",
+        "container": "original",
+        "bitrate_cutoff": "",
+        "bitrate_target_percentage": "50",
+        "enable_bframes": "true",
+        "force_conform": "false",
+        "cq": "18",
+        "reQueueAfter": false,
+        "variables": "__PRESERVE__",
+        "enable_10bit": "true",
+        "aq_strength": "2",
+        "multipass_fullres": "true"
+      },
+      "fpEnabled": true,
+      "id": "k8uufoR_r",
+      "position": {
+        "x": -420,
+        "y": 336
+      }
+    },
+    {
       "name": "Replace Original File",
       "sourceRepo": "Community",
       "pluginName": "replaceOriginalFile",
@@ -123,15 +149,16 @@
       "inputsDB": {
         "strings": "DV,DOVI",
         "caseSensitive": "false",
-        "terms": "",
-        "pattern": "\\b(DV|DOVI)\\b"
+        "terms": "DV,DVOI",
+        "pattern": "",
+        "fileToCheck": "originalFile",
+        "includeFileDirectory": "false"
       },
-
       "fpEnabled": true,
       "id": "ntg_Xmhso",
       "position": {
         "x": 0,
-        "y": 90
+        "y": 108
       }
     },
     {
@@ -144,11 +171,11 @@
       "id": "BC6vwlGK1",
       "position": {
         "x": 0,
-        "y": 168
+        "y": 180
       }
     },
     {
-      "name": "Adaptive SDR NVENC",
+      "name": "Adaptive SDR NVENC (265)",
       "sourceRepo": "Community",
       "pluginName": "runClassicTranscodePlugin",
       "version": "2.0.0",
@@ -156,20 +183,21 @@
         "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_SDR",
         "container": "original",
         "bitrate_cutoff": "",
-        "bitrate_target_percentage": "50",
-        "multipass_fullres": "true",
+        "bitrate_target_percentage": "70",
         "enable_bframes": "true",
         "force_conform": "false",
-        "cq": "18",
+        "cq": "20",
         "reQueueAfter": false,
         "variables": "__PRESERVE__",
-        "enable_10bit": "true"
+        "enable_10bit": "true",
+        "aq_strength": "2",
+        "multipass_fullres": "true"
       },
       "fpEnabled": true,
       "id": "adaptive_sdr_nvenc",
       "position": {
-        "x": -260,
-        "y": 260
+        "x": -228,
+        "y": 336
       }
     },
     {
@@ -181,19 +209,20 @@
         "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveNVENC_HDR",
         "container": "original",
         "bitrate_cutoff": "",
-        "bitrate_target_percentage": "50",
-        "multipass_fullres": "true",
+        "bitrate_target_percentage": "70",
         "enable_bframes": "true",
         "force_conform": "false",
-        "cq": "18",
+        "cq": "20",
         "reQueueAfter": false,
-        "variables": "__PRESERVE__"
+        "variables": "__PRESERVE__",
+        "aq_strength": "2",
+        "multipass_fullres": "true"
       },
       "fpEnabled": true,
       "id": "adaptive_hdr_nvenc",
       "position": {
-        "x": 260,
-        "y": 260
+        "x": 252,
+        "y": 336
       }
     },
     {
@@ -204,7 +233,7 @@
       "fpEnabled": true,
       "id": "ipvV_r8i_",
       "position": {
-        "x": -336,
+        "x": -348,
         "y": 552
       }
     },
@@ -229,18 +258,18 @@
         "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveSoftware_SDR",
         "container": "original",
         "bitrate_cutoff": "",
-        "bitrate_target_percentage": "50",
-        "enable_10bit": "false",
+        "bitrate_target_percentage": "60",
+        "enable_10bit": "true",
         "force_conform": "false",
-        "crf": "19",
-        "preset": "medium",
+        "crf": "20",
+        "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"
       },
       "fpEnabled": true,
       "id": "ENCODE_SOFT_SDR",
       "position": {
-        "x": -144,
+        "x": -600,
         "y": 552
       }
     },
@@ -253,9 +282,9 @@
         "pluginSourceId": "Local:Tdarr_Plugin_FlowHDR_AdaptiveSoftware_HDR",
         "container": "original",
         "bitrate_cutoff": "",
-        "bitrate_target_percentage": "50",
+        "bitrate_target_percentage": "70",
         "force_conform": "false",
-        "crf": "18",
+        "crf": "20",
         "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"
@@ -279,7 +308,7 @@
       "id": "runHealthCheck",
       "position": {
         "x": -24,
-        "y": 672
+        "y": 696
       }
     },
     {
@@ -303,14 +332,44 @@
       "sourceRepo": "Community",
       "pluginName": "goToFlow",
       "version": "2.0.0",
+      "inputsDB": {
+        "flowId": "BxXFt1xUa"
+      },
+      "fpEnabled": true,
       "id": "SDwNVJjkN",
       "position": {
         "x": -228,
         "y": 120
+      }
+    },
+    {
+      "name": "Check Stream Property",
+      "sourceRepo": "Community",
+      "pluginName": "checkStreamProperty",
+      "version": "1.0.0",
+      "id": "IxueJ9SxX",
+      "position": {
+        "x": -324,
+        "y": 216
       },
       "fpEnabled": true,
       "inputsDB": {
-        "flowId": "BxXFt1xUa"
+        "valuesToMatch": "h264,x264"
+      }
+    },
+    {
+      "name": "Check BPP Efficiency",
+      "sourceRepo": "Local",
+      "pluginName": "checkBPPEfficiency",
+      "version": "1.0.0",
+      "id": "KDVfNsVDS",
+      "position": {
+        "x": 0,
+        "y": 72
+      },
+      "fpEnabled": true,
+      "inputsDB": {
+        "bpp_threshold": "0.1"
       }
     }
   ],
@@ -359,16 +418,6 @@
       "source": "ntg_Xmhso",
       "sourceHandle": "2",
       "target": "BC6vwlGK1"
-    },
-    {
-      "source": "BC6vwlGK1",
-      "sourceHandle": "1",
-      "target": "adaptive_hdr_nvenc"
-    },
-    {
-      "source": "BC6vwlGK1",
-      "sourceHandle": "2",
-      "target": "adaptive_sdr_nvenc"
     },
     {
       "source": "adaptive_sdr_nvenc",
@@ -440,18 +489,60 @@
       "id": "JHj8dKUfI"
     },
     {
-      "source": "b9VldMOzx",
-      "sourceHandle": "1",
-      "target": "ntg_Xmhso",
-      "targetHandle": null,
-      "id": "XzhCcdQnl"
-    },
-    {
       "source": "ntg_Xmhso",
       "sourceHandle": "1",
       "target": "SDwNVJjkN",
       "targetHandle": null,
       "id": "aMgWSrVOE"
+    },
+    {
+      "source": "BC6vwlGK1",
+      "sourceHandle": "2",
+      "target": "IxueJ9SxX",
+      "targetHandle": null,
+      "id": "O9mlHs79e"
+    },
+    {
+      "source": "IxueJ9SxX",
+      "sourceHandle": "2",
+      "target": "adaptive_sdr_nvenc",
+      "targetHandle": null,
+      "id": "crM3ZXeB6"
+    },
+    {
+      "source": "IxueJ9SxX",
+      "sourceHandle": "1",
+      "target": "k8uufoR_r",
+      "targetHandle": null,
+      "id": "KXGq4-Sq4"
+    },
+    {
+      "source": "k8uufoR_r",
+      "sourceHandle": "1",
+      "target": "ipvV_r8i_",
+      "targetHandle": null,
+      "id": "Ah1IbYVy5"
+    },
+    {
+      "source": "BC6vwlGK1",
+      "sourceHandle": "1",
+      "target": "adaptive_hdr_nvenc",
+      "targetHandle": null,
+      "id": "Dl6IdatrG"
+    },
+    {
+      "source": "b9VldMOzx",
+      "sourceHandle": "1",
+      "target": "KDVfNsVDS",
+      "targetHandle": null,
+      "id": "Il-nq_Ava"
+    },
+    {
+      "source": "KDVfNsVDS",
+      "sourceHandle": "1",
+      "target": "ntg_Xmhso",
+      "targetHandle": null,
+      "id": "RXYZ1P6Ij"
     }
   ]
 }

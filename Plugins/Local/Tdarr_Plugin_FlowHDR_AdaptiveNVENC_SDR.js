@@ -133,7 +133,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Preset
   const cq = inputs.cq;
-  r.preset = `${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-rc-lookahead 32 ${weightedPred}${multipass}-g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-rc-lookahead 32 ${weightedPred}${multipass}-g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `SDR NVENC adaptive: cq=${cq} cur=${currentBitrate} target=${targetBitrate} min=${minimumBitrate} max=${maximumBitrate}\n`;

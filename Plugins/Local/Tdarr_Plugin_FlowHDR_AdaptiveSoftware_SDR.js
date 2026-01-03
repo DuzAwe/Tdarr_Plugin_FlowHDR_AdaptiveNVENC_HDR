@@ -120,12 +120,12 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Build x265-params with VBV constraints
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
-  const x265Params = `profile=main10:tune=fastdecode:${vbvParams}`;
+  const x265Params = `profile=main10:${vbvParams}`;
 
   // Build preset
   const crf = inputs.crf;
   const preset = inputs.preset;
-  r.preset = `${genpts}<io> -map 0 -c:v libx265 -preset ${preset} -crf ${crf} -g 600 -keyint_min 600 ${pixFmt} -bf 5 -x265-params "${x265Params}" -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v libx265 -preset ${preset} -crf ${crf} -g 600 -keyint_min 600 ${pixFmt} -bf 5 -x265-params "${x265Params}" -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `SDR Software adaptive: crf=${crf} preset=${preset} cur=${currentBitrate} target=${targetBitrate} vbv-max=${maximumBitrate}\n`;

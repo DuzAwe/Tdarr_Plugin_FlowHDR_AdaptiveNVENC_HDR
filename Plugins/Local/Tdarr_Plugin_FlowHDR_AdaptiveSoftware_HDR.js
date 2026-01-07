@@ -137,12 +137,12 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
   let x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:${vbvParams}`;
   
-  // Add HDR metadata if available
+  // Add HDR metadata if available (no quotes needed, x265 handles the values directly)
   if (hdrMasterDisplay) {
-    x265Params += `:master-display="${hdrMasterDisplay}"`;
+    x265Params += `:master-display=${hdrMasterDisplay}`;
   }
   if (hdrMaxCll) {
-    x265Params += `:max-cll="${hdrMaxCll}"`;
+    x265Params += `:max-cll=${hdrMaxCll}`;
   }
 
   // Build preset

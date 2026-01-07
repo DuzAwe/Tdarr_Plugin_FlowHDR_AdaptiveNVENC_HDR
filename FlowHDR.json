@@ -157,8 +157,8 @@
       "fpEnabled": true,
       "id": "ntg_Xmhso",
       "position": {
-        "x": 0,
-        "y": 108
+        "x": 216,
+        "y": 204
       }
     },
     {
@@ -170,8 +170,8 @@
       "fpEnabled": true,
       "id": "BC6vwlGK1",
       "position": {
-        "x": 0,
-        "y": 180
+        "x": 240,
+        "y": 264
       }
     },
     {
@@ -186,7 +186,7 @@
         "bitrate_target_percentage": "70",
         "enable_bframes": "true",
         "force_conform": "false",
-        "cq": "20",
+        "cq": "21",
         "reQueueAfter": false,
         "variables": "__PRESERVE__",
         "enable_10bit": "true",
@@ -221,8 +221,8 @@
       "fpEnabled": true,
       "id": "adaptive_hdr_nvenc",
       "position": {
-        "x": 252,
-        "y": 336
+        "x": 240,
+        "y": 420
       }
     },
     {
@@ -261,7 +261,7 @@
         "bitrate_target_percentage": "60",
         "enable_10bit": "true",
         "force_conform": "false",
-        "crf": "20",
+        "crf": "24",
         "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"
@@ -284,7 +284,7 @@
         "bitrate_cutoff": "",
         "bitrate_target_percentage": "70",
         "force_conform": "false",
-        "crf": "20",
+        "crf": "24",
         "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"
@@ -292,7 +292,7 @@
       "fpEnabled": true,
       "id": "ENCODE_SOFT_HDR",
       "position": {
-        "x": 516,
+        "x": 540,
         "y": 552
       }
     },
@@ -338,8 +338,8 @@
       "fpEnabled": true,
       "id": "SDwNVJjkN",
       "position": {
-        "x": -228,
-        "y": 120
+        "x": 72,
+        "y": 264
       }
     },
     {
@@ -349,8 +349,8 @@
       "version": "1.0.0",
       "id": "IxueJ9SxX",
       "position": {
-        "x": -324,
-        "y": 216
+        "x": 0,
+        "y": 84
       },
       "fpEnabled": true,
       "inputsDB": {
@@ -364,8 +364,8 @@
       "version": "1.0.0",
       "id": "KDVfNsVDS",
       "position": {
-        "x": 0,
-        "y": 72
+        "x": 240,
+        "y": 156
       },
       "fpEnabled": true,
       "inputsDB": {
@@ -496,27 +496,6 @@
       "id": "aMgWSrVOE"
     },
     {
-      "source": "BC6vwlGK1",
-      "sourceHandle": "2",
-      "target": "IxueJ9SxX",
-      "targetHandle": null,
-      "id": "O9mlHs79e"
-    },
-    {
-      "source": "IxueJ9SxX",
-      "sourceHandle": "2",
-      "target": "adaptive_sdr_nvenc",
-      "targetHandle": null,
-      "id": "crM3ZXeB6"
-    },
-    {
-      "source": "IxueJ9SxX",
-      "sourceHandle": "1",
-      "target": "k8uufoR_r",
-      "targetHandle": null,
-      "id": "KXGq4-Sq4"
-    },
-    {
       "source": "k8uufoR_r",
       "sourceHandle": "1",
       "target": "ipvV_r8i_",
@@ -531,18 +510,39 @@
       "id": "Dl6IdatrG"
     },
     {
-      "source": "b9VldMOzx",
-      "sourceHandle": "1",
-      "target": "KDVfNsVDS",
-      "targetHandle": null,
-      "id": "Il-nq_Ava"
-    },
-    {
       "source": "KDVfNsVDS",
       "sourceHandle": "1",
       "target": "ntg_Xmhso",
       "targetHandle": null,
       "id": "RXYZ1P6Ij"
+    },
+    {
+      "source": "b9VldMOzx",
+      "sourceHandle": "1",
+      "target": "IxueJ9SxX",
+      "targetHandle": null,
+      "id": "QQtGt-Q15"
+    },
+    {
+      "source": "IxueJ9SxX",
+      "sourceHandle": "1",
+      "target": "k8uufoR_r",
+      "targetHandle": null,
+      "id": "JWepqMc0x"
+    },
+    {
+      "source": "IxueJ9SxX",
+      "sourceHandle": "2",
+      "target": "KDVfNsVDS",
+      "targetHandle": null,
+      "id": "x6pfI4q13"
+    },
+    {
+      "source": "BC6vwlGK1",
+      "sourceHandle": "2",
+      "target": "adaptive_sdr_nvenc",
+      "targetHandle": null,
+      "id": "JcfdJ9slT"
     }
   ]
 }

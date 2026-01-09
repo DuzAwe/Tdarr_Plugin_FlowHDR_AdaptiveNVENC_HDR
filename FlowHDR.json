@@ -261,7 +261,7 @@
         "bitrate_target_percentage": "60",
         "enable_10bit": "true",
         "force_conform": "false",
-        "crf": "24",
+        "crf": "20",
         "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"
@@ -284,7 +284,7 @@
         "bitrate_cutoff": "",
         "bitrate_target_percentage": "70",
         "force_conform": "false",
-        "crf": "24",
+        "crf": "20",
         "preset": "slow",
         "reQueueAfter": false,
         "variables": "__PRESERVE__"

@@ -84,33 +84,13 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const outContainer = inputs.container === 'original' ? file.container : inputs.container;
   r.container = `.${outContainer}`;
 
-  // HDR metadata extraction
-  let hdrMasterDisplay = '';
-  let hdrMaxCll = '';
-  const streams = file.ffProbeData?.streams || [];
-  for (const s of streams) {
-    if (s.codec_type?.toLowerCase() === 'video') {
-      const sideData = s.side_data_list || [];
-      for (const sd of sideData) {
-        if (sd.side_data_type === 'Mastering display metadata') {
-          const r = sd.red_x ? `G(${sd.green_x},${sd.green_y})B(${sd.blue_x},${sd.blue_y})R(${sd.red_x},${sd.red_y})WP(${sd.white_point_x},${sd.white_point_y})` : '';
-          const l = sd.max_luminance ? `L(${sd.max_luminance},${sd.min_luminance})` : '';
-          if (r || l) hdrMasterDisplay = `${r}${l}`;
-        }
-        if (sd.side_data_type === 'Content light level metadata' && sd.max_content) {
-          hdrMaxCll = `${sd.max_content},${sd.max_average}`;
-        }
-      }
-      break;
-    }
-  }
-
   // genpts for ts/avi
   let genpts = '';
   if (['ts','avi'].includes(outContainer.toLowerCase())) genpts='-fflags +genpts ';
 
   // Stream conform + picture removal
   let extraMaps = '';
+  const streams = file.ffProbeData?.streams || [];
   let vidIdx = 0;
   streams.forEach((s)=>{
     if (s.codec_type?.toLowerCase()==='video') {
@@ -135,15 +115,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Build x265-params with HDR10 and VBV constraints
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
-  let x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:${vbvParams}`;
-  
-  // Add HDR metadata if available (no quotes needed, x265 handles the values directly)
-  if (hdrMasterDisplay) {
-    x265Params += `:master-display=${hdrMasterDisplay}`;
-  }
-  if (hdrMaxCll) {
-    x265Params += `:max-cll=${hdrMaxCll}`;
-  }
+  const x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=smpte2084:colormatrix=bt2020nc:${vbvParams}`;
 
   // Build preset
   const crf = inputs.crf;

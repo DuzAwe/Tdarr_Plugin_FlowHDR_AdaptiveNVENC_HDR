@@ -86,32 +86,13 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const outContainer = inputs.container === 'original' ? file.container : inputs.container;
   r.container = `.${outContainer}`;
 
-  // HDR metadata extraction
-  let hdr = '';
-  const streams = file.ffProbeData?.streams || [];
-  for (const s of streams) {
-    if (s.codec_type?.toLowerCase() === 'video') {
-      const sideData = s.side_data_list || [];
-      for (const sd of sideData) {
-        if (sd.side_data_type === 'Mastering display metadata') {
-          const r = sd.red_x ? `G(${sd.green_x},${sd.green_y})B(${sd.blue_x},${sd.blue_y})R(${sd.red_x},${sd.red_y})WP(${sd.white_point_x},${sd.white_point_y})` : '';
-          const l = sd.max_luminance ? `L(${sd.max_luminance},${sd.min_luminance})` : '';
-          if (r || l) hdr += `-master-display "${r}${l}" `;
-        }
-        if (sd.side_data_type === 'Content light level metadata' && sd.max_content) {
-          hdr += `-max-cll "${sd.max_content},${sd.max_average}" `;
-        }
-      }
-      break;
-    }
-  }
-
   // genpts for ts/avi
   let genpts = '';
   if (['ts','avi'].includes(outContainer.toLowerCase())) genpts='-fflags +genpts ';
 
   // Stream conform + picture removal
   let extraMaps = '';
+  const streams = file.ffProbeData?.streams || [];
   let vidIdx = 0;
   streams.forEach((s)=>{
     if (s.codec_type?.toLowerCase()==='video') {
@@ -150,7 +131,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Preset
   const cq = inputs.cq;
-  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-rc-lookahead 32 ${weightedPred}${multipass}-g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} ${hdr}-fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -color_primaries bt2020 -color_trc smpte2084 -colorspace bt2020nc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes} -rc-lookahead 32 -tune hq ${weightedPred}${multipass} -g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `HDR NVENC adaptive: cq=${cq} cur=${currentBitrate} target=${targetBitrate} min=${minimumBitrate} max=${maximumBitrate}\n`;

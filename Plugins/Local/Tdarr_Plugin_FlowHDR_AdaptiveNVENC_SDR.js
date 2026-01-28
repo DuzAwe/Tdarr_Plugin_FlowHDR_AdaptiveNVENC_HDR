@@ -6,7 +6,7 @@ const details = () => ({
   Type: 'Video',
   Operation: 'Transcode',
   Description: 'Replicates bling.js bitrate logic for SDR using computed bitrates.',
-  Version: '1.0',
+  Version: '1.1',
   Tags: 'flowhdr,sdr,nvenc,adaptive',
   Inputs: [
     { name: 'container', type: 'string', defaultValue: 'original', inputUI: { type: 'text' },
@@ -133,7 +133,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Preset
   const cq = inputs.cq;
-  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes}-rc-lookahead 32 ${weightedPred}${multipass}-g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes} -rc-lookahead 32 -tune hq ${weightedPred}${multipass} -g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `SDR NVENC adaptive: cq=${cq} cur=${currentBitrate} target=${targetBitrate} min=${minimumBitrate} max=${maximumBitrate}\n`;

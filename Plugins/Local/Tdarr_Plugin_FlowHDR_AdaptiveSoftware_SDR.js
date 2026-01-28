@@ -115,12 +115,13 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
     }
   }
 
-  // Pixel format
-  const pixFmt = inputs.enable_10bit ? '-pix_fmt yuv420p10le' : '';
+  // Pixel format and profile
+  const pixFmt = inputs.enable_10bit ? '-pix_fmt yuv420p10le' : '-pix_fmt yuv420p';
+  const profile = inputs.enable_10bit ? 'main10' : 'main';
 
   // Build x265-params with VBV constraints
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
-  const x265Params = `profile=main10:${vbvParams}`;
+  const x265Params = `profile=${profile}:open-gop=0:aq-mode=2:b-adapt=2:rc-lookahead=32:${vbvParams}`;
 
   // Build preset
   const crf = inputs.crf;

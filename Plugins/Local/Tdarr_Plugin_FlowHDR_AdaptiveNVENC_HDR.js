@@ -16,7 +16,7 @@ const details = () => ({
     { name: 'bitrate_target_percentage', type: 'string', defaultValue: '50', inputUI: { type: 'text' },
       tooltip: 'Target bitrate as % of source (e.g., 50 = half). Range: 1-100.' },
     { name: 'enable_bframes', type: 'boolean', defaultValue: true, inputUI: { type: 'dropdown', options: ['false','true'] },
-      tooltip: 'Use NVENC B-frames. Note: weighted_pred is disabled when B-frames are enabled.' },
+      tooltip: 'Use NVENC B-frames for improved compression efficiency.' },
     { name: 'multipass_fullres', type: 'boolean', defaultValue: true, inputUI: { type: 'dropdown', options: ['false','true'] },
       tooltip: 'Enable NVENC full-resolution multipass for improved quality.' },
     { name: 'force_conform', type: 'boolean', defaultValue: false, inputUI: { type: 'dropdown', options: ['false','true'] },
@@ -123,15 +123,13 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Multipass toggle
   const multipass = inputs.multipass_fullres ? '-multipass fullres ' : '';
-  // Weighted prediction only when B-frames are disabled
-  const weightedPred = inputs.enable_bframes ? '' : '-weighted_pred 1 ';
 
   // Bitrate settings
   const bitrateBlock = `-b:v ${targetBitrate}k -minrate ${minimumBitrate}k -maxrate ${maximumBitrate}k -bufsize ${bufSize}k`;
 
   // Preset
   const cq = inputs.cq;
-  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -color_primaries bt2020 -color_trc smpte2084 -colorspace bt2020nc -preset p7 -rc:v vbr -cq:v ${cq} ${bframes} -rc-lookahead 32 -tune hq ${weightedPred}${multipass} -g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
+  r.preset = `-hwaccel cuda ${genpts}<io> -map 0 -c:v hevc_nvenc -color_primaries bt2020 -color_trc smpte2084 -colorspace bt2020nc -preset p7 -rc:v vbr_hq -cq:v ${cq} ${bframes} -rc-lookahead 32 -tune hq -strict_gop 1 ${multipass} -g 600 -keyint_min 600 ${pixFmt} ${bitrateBlock} -fps_mode passthrough -c:a copy -c:s copy -max_muxing_queue_size 9999 ${extraMaps}`.trim();
 
   r.processFile = true;
   r.infoLog += `HDR NVENC adaptive: cq=${cq} cur=${currentBitrate} target=${targetBitrate} min=${minimumBitrate} max=${maximumBitrate}\n`;

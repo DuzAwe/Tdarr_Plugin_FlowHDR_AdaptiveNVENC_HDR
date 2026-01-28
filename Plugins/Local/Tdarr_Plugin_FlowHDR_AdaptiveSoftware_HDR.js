@@ -115,7 +115,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
 
   // Build x265-params with HDR10 and VBV constraints
   const vbvParams = `vbv-maxrate=${maximumBitrate}:vbv-bufsize=${bufSize}`;
-  const x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=smpte2084:colormatrix=bt2020nc:${vbvParams}`;
+  const x265Params = `profile=main10:hdr10=1:hdr10-opt=1:colorprim=bt2020:transfer=smpte2084:colormatrix=bt2020nc:open-gop=0:aq-mode=2:b-adapt=2:rc-lookahead=32:${vbvParams}`;
 
   // Build preset
   const crf = inputs.crf;

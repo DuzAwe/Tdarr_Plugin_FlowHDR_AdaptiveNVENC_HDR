@@ -72,7 +72,7 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
   const targetPercent = Math.max(1, Math.min(100, parseInt(inputs.bitrate_target_percentage, 10) || 50));
   const targetBitrate = Math.round(currentBitrate * (targetPercent / 100));
   const minimumBitrate = Math.round(targetBitrate * 0.8);
-  const maximumBitrate = Math.round(targetBitrate * 1.5);
+  const maximumBitrate = Math.round(targetBitrate * 1.2);
   const bufSize = Math.round(maximumBitrate * 2);
 
   // Bitrate cutoff

@@ -99,6 +99,16 @@ const plugin = (file, librarySettings, inputs, otherArguments) => {
     }
   });
 
+  // Always strip subtitle streams ffmpeg cannot identify (no codec_name).
+  // Muxing an unrecognized subtitle codec with -c:s copy causes ffmpeg to fail
+  // writing the container header entirely, producing a zero-byte output file
+  // (video and audio lost too), even though those tracks were otherwise fine.
+  streams.forEach((s,i)=>{
+    if (s.codec_type?.toLowerCase()==='subtitle' && !s.codec_name) {
+      extraMaps+=`-map -0:${i} `;
+    }
+  });
+
   if (inputs.force_conform) {
     if (outContainer.toLowerCase()==='mp4') {
       streams.forEach((s,i)=>{
